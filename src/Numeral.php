@@ -1,39 +1,41 @@
 <?php
-namespace php_rutils;
+
+declare(strict_types=1);
+
+namespace PhpRutils;
 
 /**
  * Plural forms and in-word representation for numerals
- * Class Numeral
- * @package php_rutils
+ * Class Numeral.
  */
 class Numeral
 {
-    private static $_FRACTIONS = array(
-        array('десятая', 'десятых', 'десятых'),
-        array('сотая', 'сотых', 'сотых'),
-        array('тысячная', 'тысячных', 'тысячных'),
-        array('десятитысячная', 'десятитысячных', 'десятитысячных'),
-        array('стотысячная', 'стотысячных', 'стотысячных'),
-        array('миллионная', 'милллионных', 'милллионных'),
-        array('десятимиллионная', 'десятимилллионных', 'десятимиллионных'),
-        array('стомиллионная', 'стомилллионных', 'стомиллионных'),
-        array('миллиардная', 'миллиардных', 'миллиардных'),
-    ); //Forms (1, 2, 5) for fractions
+    private static $_FRACTIONS = [
+        ['десятая', 'десятых', 'десятых'],
+        ['сотая', 'сотых', 'сотых'],
+        ['тысячная', 'тысячных', 'тысячных'],
+        ['десятитысячная', 'десятитысячных', 'десятитысячных'],
+        ['стотысячная', 'стотысячных', 'стотысячных'],
+        ['миллионная', 'милллионных', 'милллионных'],
+        ['десятимиллионная', 'десятимилллионных', 'десятимиллионных'],
+        ['стомиллионная', 'стомилллионных', 'стомиллионных'],
+        ['миллиардная', 'миллиардных', 'миллиардных'],
+    ]; //Forms (1, 2, 5) for fractions
 
-    private static $_ONES = array(
-        array('', '', ''),
-        array('один', 'одна', 'одно'),
-        array('два', 'две', 'два'),
-        array('три', 'три', 'три'),
-        array('четыре', 'четыре', 'четыре'),
-        array('пять', 'пять', 'пять'),
-        array('шесть', 'шесть', 'шесть'),
-        array('семь', 'семь', 'семь'),
-        array('восемь', 'восемь', 'восемь'),
-        array('девять', 'девять', 'девять'),
-    ); //Forms (MALE, FEMALE, NEUTER) for ones
+    private static $_ONES = [
+        ['', '', ''],
+        ['один', 'одна', 'одно'],
+        ['два', 'две', 'два'],
+        ['три', 'три', 'три'],
+        ['четыре', 'четыре', 'четыре'],
+        ['пять', 'пять', 'пять'],
+        ['шесть', 'шесть', 'шесть'],
+        ['семь', 'семь', 'семь'],
+        ['восемь', 'восемь', 'восемь'],
+        ['девять', 'девять', 'девять'],
+    ]; //Forms (MALE, FEMALE, NEUTER) for ones
 
-    private static $_TENS = array(
+    private static $_TENS = [
         0 => '',
         //1 - special variant
         10 => 'десять',
@@ -54,9 +56,9 @@ class Numeral
         7 => 'семьдесят',
         8 => 'восемьдесят',
         9 => 'девяносто',
-    ); //Tens
+    ]; //Tens
 
-    private static $_HUNDREDS = array(
+    private static $_HUNDREDS = [
         0 => '',
         1 => 'сто',
         2 => 'двести',
@@ -67,10 +69,10 @@ class Numeral
         7 => 'семьсот',
         8 => 'восемьсот',
         9 => 'девятьсот',
-    ); //Hundreds
+    ]; //Hundreds
 
     /**
-     * Get proper case with value
+     * Get proper case with value.
      * @param int $amount Amount of objects
      * @param array $variants Variants (forms) of object in such form: array('1 object', '2 objects', '5 objects')
      * @param string|null $absence If amount is zero will return it
@@ -79,15 +81,16 @@ class Numeral
     public function getPlural($amount, array $variants, $absence = null)
     {
         if ($amount || $absence === null) {
-            $result = RUtils::formatNumber($amount).' '.$this->choosePlural($amount, $variants);
+            $result = RUtils::formatNumber($amount) . ' Numeral.php' . $this->choosePlural($amount, $variants);
         } else {
             $result = $absence;
         }
+
         return $result;
     }
 
     /**
-     * Choose proper case depending on amount
+     * Choose proper case depending on amount.
      * @param int $amount Amount of objects
      * @param string[] $variants Variants (forms) of object in such form: array('1 object', '2 objects', '5 objects')
      * @return string Proper variant
@@ -95,7 +98,7 @@ class Numeral
      */
     public function choosePlural($amount, array $variants)
     {
-        if (sizeof($variants) < 3) {
+        if (count($variants) < 3) {
             throw new \InvalidArgumentException('Incorrect values length (must be 3)');
         }
 
@@ -105,7 +108,7 @@ class Numeral
 
         if ($mod10 == 1 && $mod100 != 11) {
             $variant = 0;
-        } elseif ($mod10 >= 2 && $mod10 <= 4 && !($mod100 > 10 && $mod100 < 20)) {
+        } elseif ($mod10 >= 2 && $mod10 <= 4 && ! ($mod100 > 10 && $mod100 < 20)) {
             $variant = 1;
         } else {
             $variant = 2;
@@ -115,7 +118,7 @@ class Numeral
     }
 
     /**
-     * Get sum in words
+     * Get sum in words.
      * @param int $amount Amount of objects (0 <= amount <= PHP_INT_MAX)
      * @param int $gender Gender of object (MALE, FEMALE or NEUTER)
      * @param array $variants Variants (forms) of object in such form: array('1 object', '2 objects', '5 objects')
@@ -128,15 +131,17 @@ class Numeral
         if ($variants === null) {
             $variants = array_fill(0, 3, '');
         }
-        if (sizeof($variants) < 3) {
+
+        if (count($variants) < 3) {
             throw new \InvalidArgumentException('Incorrect items length (must be 3)');
         }
+
         if ($amount < 0) {
             throw new \InvalidArgumentException('Amount must be positive or 0');
         }
 
         if ($amount == 0) {
-            return trim('ноль '.$variants[2]);
+            return trim('ноль ' . $variants[2]);
         }
 
         $result = '';
@@ -149,27 +154,28 @@ class Numeral
             $result,
             $tmpVal,
             RUtils::FEMALE,
-            array('тысяча', 'тысячи', 'тысяч')
+            ['тысяча', 'тысячи', 'тысяч']
         );
         //millions
         list($result, $tmpVal) = $this->_sumStringOneOrder(
             $result,
             $tmpVal,
             RUtils::MALE,
-            array('миллион', 'миллиона', 'миллионов')
+            ['миллион', 'миллиона', 'миллионов']
         );
         //billions
-        list($result,) = $this->_sumStringOneOrder(
+        list($result) = $this->_sumStringOneOrder(
             $result,
             $tmpVal,
             RUtils::MALE,
-            array('миллиард', 'миллиарда', 'миллиардов')
+            ['миллиард', 'миллиарда', 'миллиардов']
         );
+
         return trim($result);
     }
 
     /**
-     * Make in-words representation of single order
+     * Make in-words representation of single order.
      * @param string $prevResult In-words representation of lower orders
      * @param int $tmpVal Temporary value without lower orders
      * @param int $gender (MALE, FEMALE or NEUTER)
@@ -180,32 +186,34 @@ class Numeral
     private function _sumStringOneOrder($prevResult, $tmpVal, $gender, array $variants)
     {
         if ($tmpVal == 0) {
-            return array($prevResult, $tmpVal);
+            return [$prevResult, $tmpVal];
         }
 
-        $words = array();
+        $words = [];
         $fiveItems = $variants[2];
         $rest = $tmpVal % 1000;
+
         if ($rest < 0) {
             throw new \RangeException('Int overflow');
         }
 
-        $tmpVal = intval($tmpVal / 1000);
+        $tmpVal = (int) ($tmpVal / 1000);
 
         //check last digits are 0
         if ($rest == 0) {
-            if (!$prevResult) {
-                $prevResult = $fiveItems.' ';
+            if (! $prevResult) {
+                $prevResult = $fiveItems . ' ';
             }
-            return array($prevResult, $tmpVal);
+
+            return [$prevResult, $tmpVal];
         }
 
         //hundreds
-        $words[] = self::$_HUNDREDS[intval($rest / 100)];
+        $words[] = self::$_HUNDREDS[(int) ($rest / 100)];
 
         //tens
         $rest %= 100;
-        $rest1 = intval($rest / 10);
+        $rest1 = (int) ($rest / 10);
         $words[] = ($rest1 == 1) ? self::$_TENS[$rest] : self::$_TENS[$rest1];
 
         //ones
@@ -222,26 +230,27 @@ class Numeral
         $words = array_filter($words, 'strlen');
 
         $result = trim(implode(' ', $words));
-        return array($result, $tmpVal);
+
+        return [$result, $tmpVal];
     }
 
     /**
-     * Numeral in words
+     * Numeral in words.
      * @param float $amount Amount of objects
      * @param int|null $gender (MALE, FEMALE, NEUTER or null)
      * @return string In-words representation of numeral
      */
     public function getInWords($amount, $gender = RUtils::MALE)
     {
-        if ($amount == (int)$amount) {
+        if ($amount == (int) $amount) {
             return $this->getInWordsInt($amount, $gender);
-        } else {
-            return $this->getInWordsFloat($amount);
         }
+
+        return $this->getInWordsFloat($amount);
     }
 
     /**
-     * Integer in words
+     * Integer in words.
      * @param int $amount Amount of objects (0 <= amount <= PHP_INT_MAX)
      * @param int $gender (MALE, FEMALE or NEUTER)
      * @return string In-words representation of numeral
@@ -249,20 +258,21 @@ class Numeral
     public function getInWordsInt($amount, $gender = RUtils::MALE)
     {
         $amount = round($amount);
+
         return $this->sumString($amount, $gender);
     }
 
     /**
-     * Float in words
+     * Float in words.
      * @param float $amount Amount of objects
      * @return string In-words representation of float numeral
      */
     public function getInWordsFloat($amount)
     {
-        $words = array();
+        $words = [];
 
-        $intPart = (int)$amount;
-        $pointVariants = array('целая', 'целых', 'целых');
+        $intPart = (int) $amount;
+        $pointVariants = ['целая', 'целых', 'целых'];
         $words[] = $this->sumString($intPart, RUtils::FEMALE, $pointVariants);
 
         $remainder = $this->_getFloatRemainder($amount);
@@ -270,26 +280,28 @@ class Numeral
         $words[] = $this->sumString($remainder, RUtils::FEMALE, self::$_FRACTIONS[$signs]);
 
         $result = trim(implode(' ', $words));
+
         return $result;
     }
 
     /**
-     * Get remainder of float, i.e. 2.05 -> '05'
+     * Get remainder of float, i.e. 2.05 -> '05'.
      * @param float $value
      * @param int $signs
      * @return string
      */
     private function _getFloatRemainder($value, $signs = 9)
     {
-        if ($value == (int)$value) {
+        if ($value == (int) $value) {
             return '0';
         }
 
-        $signs = min($signs, sizeof(self::$_FRACTIONS));
+        $signs = min($signs, count(self::$_FRACTIONS));
         $value = number_format($value, $signs, '.', '');
         list(, $remainder) = explode('.', $value);
         $remainder = preg_replace('/0+$/', '', $remainder);
-        if (!$remainder) {
+
+        if (! $remainder) {
             $remainder = '0';
         }
 
@@ -297,7 +309,7 @@ class Numeral
     }
 
     /**
-     * Get string for money (RUB)
+     * Get string for money (RUB).
      * @param float $amount Amount of money
      * @param bool $zeroForKopeck If false, then zero kopecks ignored
      * @return string   In-words representation of money's amount
@@ -309,19 +321,21 @@ class Numeral
             throw new \InvalidArgumentException('Amount must be positive or 0');
         }
 
-        $words = array();
+        $words = [];
         $amount = round($amount, 2);
 
-        $iAmount = (int)$amount;
+        $iAmount = (int) $amount;
+
         if ($iAmount) {
             $words[] = $this->sumString(
-                (int)$amount,
+                (int) $amount,
                 RUtils::MALE,
-                array('рубль', 'рубля', 'рублей')
+                ['рубль', 'рубля', 'рублей']
             );
         }
 
         $remainder = $this->_getFloatRemainder($amount, 2);
+
         if ($remainder || $zeroForKopeck) {
             if ($remainder < 10 && strlen($remainder) == 1) {
                 $remainder *= 10;
@@ -329,7 +343,7 @@ class Numeral
             $words[] = $this->sumString(
                 $remainder,
                 RUtils::FEMALE,
-                array('копейка', 'копейки', 'копеек')
+                ['копейка', 'копейки', 'копеек']
             );
         }
 

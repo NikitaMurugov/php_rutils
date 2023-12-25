@@ -1,4 +1,6 @@
 *.iml
 .idea/
+var/
 composer.lock
 vendor
+.php-cs-fixer.cache

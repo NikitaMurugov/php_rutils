@@ -1,10 +1,10 @@
 <?php
-namespace php_rutils;
+
+namespace PhpRutils;
 
 /**
  * Rules for Typo::typography
- * Class TypoRules
- * @package php_rutils
+ * Class TypoRules.
  */
 class TypoRules
 {
@@ -30,10 +30,10 @@ class TypoRules
     const QUOTES = 'Quotes';
 
     //Standard rules: quotes, marks, dashes, clean spaces
-    public static $STANDARD_RULES = array(self::QUOTES, self::MARKS, self::DASHES, self::CLEAN_SPACES);
+    public static array $STANDARD_RULES = [self::QUOTES, self::MARKS, self::DASHES, self::CLEAN_SPACES];
 
     //Standard rules: quotes, marks, word glue, dashes, initials, ellipsis, clean spaces
-    public static $EXTENDED_RULES = array(
+    public static array $EXTENDED_RULES = [
         self::DASHES,
         self::QUOTES,
         self::MARKS,
@@ -41,5 +41,5 @@ class TypoRules
         self::CLEAN_SPACES,
         self::INITIALS,
         self::WORD_GLUE,
-    );
+    ];
 }

@@ -1,59 +1,56 @@
 <?php
-namespace php_rutils\struct;
 
-class TimeParams
+declare(strict_types=1);
+
+namespace PhpRutils\Struct;
+
+final class TimeParams
 {
     /**
      * Date format, use PHP date() function specification:
      * http://www.php.net/manual/en/function.date.php
-     * @var string
      */
-    public $format = 'd.m.Y';
+    public string $format = 'd.m.Y';
 
     /**
      * Date value, default=null translates to 'now'.
      * For string values use matched PHP rules:
      * http://www.php.net/manual/en/datetime.formats.php
-     * Int value as Unix timestamp
-     * @var string|int|\DateTime
+     * Int value as Unix timestamp.
      */
-    public $date = null;
+    public string|int|\DateTime|null $date = null;
 
     /**
      * Timezone value, default=null translates to default PHP timezone.
      * For string values use matched PHP rules:
-     * http://www.php.net/manual/en/timezones.php
-     * @var string|\DateTimeZone|null
+     * http://www.php.net/manual/en/timezones.php.
      */
-    public $timezone = null;
+    public string|\DateTimeZone|null $timezone = null;
 
     /**
-     * Is month inflected (января, февраля), default false
-     * @var bool
+     * Is month inflected (января, февраля), default false.
      */
-    public $monthInflected = false;
+    public bool $monthInflected = false;
 
     /**
-     * Is day inflected (среду, пятницу) default false
-     * @var bool
+     * Is day inflected (среду, пятницу) default false.
      */
-    public $dayInflected = false;
+    public bool $dayInflected = false;
 
     /**
      * Is preposition used (во вторник), default false
-     * $preposition=true automatically implies $dayInflected=true
-     * @var bool
+     * $preposition=true automatically implies $dayInflected=true.
      */
-    public $preposition = false;
+    public bool $preposition = false;
 
     /**
-     * Create params from array or with default values
-     * @param array|null $aParams
-     * @return TimeParams
+     * Create params from array or with default values.
+     * @param array<string, mixed>|null $aParams
      */
-    public static function create(array $aParams = null)
+    public static function create(array $aParams = null): self
     {
         $params = new self();
+
         if ($aParams === null) {
             return $params;
         }
